@@ -61,11 +61,11 @@ export class Statement {
     return result;
   }
 
-  getTotal(): any {
+  getTotal(): number {
     return this.totalAmount;
   }
 
-  getFrequentRenterPoints(): any {
+  getFrequentRenterPoints(): number {
     return this.frequentRenterPoints;
   }
 }
