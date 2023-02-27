@@ -12,53 +12,48 @@ export class Statement {
     this.rentales.push(rental);
   }
 
-  getName() {
-    return this.customerName;
+  generate() {
+    this.clearTotals();
+    let statementText = this.header();
+    statementText += this.rentalLines();
+    statementText += this.footer();
+    return statementText;
   }
 
-  generate() {
+  private clearTotals() {
     this.totalAmount = 0;
     this.frequentRenterPoints = 0;
-    let result = "Rental Record for " + this.getName() + "\n";
+  }
 
-    this.rentales.forEach((each) => {
-      let thisAmount = 0;
+  private header(): string {
+    return `Rental Record for ${this.customerName}\n`;
+  }
 
-      switch (each.getMovie().getPriceCode()) {
-        case Movie.REGULAR:
-          thisAmount += 2;
-          if (each.getDaysRented() > 2) {
-            thisAmount += (each.getDaysRented() - 2) * 1.5;
-          }
-          break;
-        case Movie.NEW_RELEASE:
-          thisAmount += each.getDaysRented() * 3;
-          break;
-        case Movie.CHILDRENS:
-          thisAmount += 1.5;
-          if (each.getDaysRented() > 3)
-            thisAmount += (each.getDaysRented() - 3) * 1.5;
-          break;
-      }
-
-      this.frequentRenterPoints++;
-
-      if (
-        each.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
-        each.getDaysRented() > 1
-      )
-        this.frequentRenterPoints++;
-
-      result +=
-        "\t" + each.getMovie().getTitle() + "\t" + thisAmount.toFixed(1) + "\n";
-      this.totalAmount += thisAmount;
+  private rentalLines() {
+    let rentalLines = "";
+    this.rentales.forEach((rental) => {
+      rentalLines += this.rentalLine(rental);
     });
+    return rentalLines;
+  }
 
-    result += "You owed " + this.totalAmount.toFixed(1) + "\n";
-    result +=
-      "You earned " + this.frequentRenterPoints + " frequent renter points\n";
+  private rentalLine(rental: Rental) {
+    const rentalAmount = rental.determineAmount();
+    this.frequentRenterPoints += rental.determineFrequentRenterPoints();
+    this.totalAmount += rentalAmount;
 
-    return result;
+    return this.formatRentalLine(rental, rentalAmount);
+  }
+
+  private formatRentalLine(rental: Rental, rentalAmount: number) {
+    return `\t${rental.getMovieTitle()}\t${rentalAmount.toFixed(1)}\n`;
+  }
+
+  private footer() {
+    return (
+      `You owed ${this.totalAmount.toFixed(1)}\n` +
+      `You earned ${this.frequentRenterPoints} frequent renter points\n`
+    );
   }
 
   getTotal(): number {

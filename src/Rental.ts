@@ -10,7 +10,15 @@ export class Rental {
     return this.daysRented;
   }
 
-  getMovie(): Movie {
-    return this.movie;
+  getMovieTitle(): string {
+    return this.movie.getTitle();
+  }
+
+  determineAmount() {
+    return this.movie.determineAmount(this.daysRented);
+  }
+
+  determineFrequentRenterPoints(): number {
+    return this.movie.determineFrequentRenterPoints(this.daysRented);
   }
 }
