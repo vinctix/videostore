@@ -9,7 +9,7 @@ describe("Videostore tests", () => {
     statement = new Statement("Fred");
   });
 
-  test("test Single New Release Statement", () => {
+  test("Test single new release statement totals", () => {
     statement.addRental(
       new Rental(new Movie("The Cell", Movie.NEW_RELEASE), 3)
     );
@@ -18,7 +18,7 @@ describe("Videostore tests", () => {
     expect(statement.getFrequentRenterPoints()).toBe(2);
   });
 
-  test("testDualNewReleaseStatement", () => {
+  test("test dual new release statement totals", () => {
     statement.addRental(
       new Rental(new Movie("The Cell", Movie.NEW_RELEASE), 3)
     );
@@ -30,7 +30,7 @@ describe("Videostore tests", () => {
     expect(statement.getFrequentRenterPoints()).toBe(4);
   });
 
-  test("testSingleChildrensStatement", () => {
+  test("test single childrens statement totals", () => {
     statement.addRental(
       new Rental(new Movie("The Tigger Movie", Movie.CHILDRENS), 3)
     );
@@ -39,7 +39,7 @@ describe("Videostore tests", () => {
     expect(statement.getFrequentRenterPoints()).toBe(1);
   });
 
-  test("testMultipleRegularStatement", () => {
+  test("test multiple regular statement totals", () => {
     statement.addRental(
       new Rental(new Movie("Plan 9 from Outer Space", Movie.REGULAR), 1)
     );
@@ -51,7 +51,7 @@ describe("Videostore tests", () => {
     expect(statement.getFrequentRenterPoints()).toBe(3);
   });
 
-  test("Test Multiple Regular Statement Format", () => {
+  test("test multiple regular statement format", () => {
     statement.addRental(
       new Rental(new Movie("Plan 9 from Outer Space", Movie.REGULAR), 1)
     );
