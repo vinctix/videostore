@@ -1,22 +1,24 @@
 import { Movie } from "./Movie";
 import { Rental } from "./Rental";
 
-export class Customer {
+export class Statement {
   private readonly rentales: Rental[] = [];
+  private totalAmount = 0;
+  private frequentRenterPoints = 0;
 
-  constructor(private readonly name: string) {}
+  constructor(private readonly customerName: string) {}
 
   addRental(rental: Rental) {
     this.rentales.push(rental);
   }
 
   getName() {
-    return this.name;
+    return this.customerName;
   }
 
-  statement() {
-    let totalAmount = 0;
-    let frequentRenterPoints = 0;
+  generate() {
+    this.totalAmount = 0;
+    this.frequentRenterPoints = 0;
     let result = "Rental Record for " + this.getName() + "\n";
 
     this.rentales.forEach((each) => {
@@ -39,23 +41,31 @@ export class Customer {
           break;
       }
 
-      frequentRenterPoints++;
+      this.frequentRenterPoints++;
 
       if (
         each.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
         each.getDaysRented() > 1
       )
-        frequentRenterPoints++;
+        this.frequentRenterPoints++;
 
       result +=
         "\t" + each.getMovie().getTitle() + "\t" + thisAmount.toFixed(1) + "\n";
-      totalAmount += thisAmount;
+      this.totalAmount += thisAmount;
     });
 
-    result += "You owed " + totalAmount.toFixed(1) + "\n";
+    result += "You owed " + this.totalAmount.toFixed(1) + "\n";
     result +=
-      "You earned " + frequentRenterPoints + " frequent renter points\n";
+      "You earned " + this.frequentRenterPoints + " frequent renter points\n";
 
     return result;
+  }
+
+  getTotal(): any {
+    return this.totalAmount;
+  }
+
+  getFrequentRenterPoints(): any {
+    return this.frequentRenterPoints;
   }
 }
