@@ -1,4 +1,3 @@
-import { Movie } from "./Movie";
 import { Rental } from "./Rental";
 
 export class Statement {
